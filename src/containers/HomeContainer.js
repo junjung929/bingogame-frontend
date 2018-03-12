@@ -21,7 +21,7 @@ class HomeContainer extends Component {
   }
   componentDidMount() {
     const content = (
-      <Button as={Link} to="/create" basic content="Start" color="pink" />
+      <Button as={Link} size="large" to="/create" basic content="Start" color="pink" />
     );
     setTimeout(() => {
       this.setState({ content });

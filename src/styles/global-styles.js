@@ -13,6 +13,11 @@ injectGlobal`
     padding: 0;
     font-family: sans-serif;
   }
+
+  #root{
+    height:100%
+  }
+
   .flex-container{
     display: flex;
     overflow: auto;
@@ -39,5 +44,10 @@ injectGlobal`
 
   .hover:hover {
     cursor: pointer;
+  }
+
+  .bingo-board {
+    max-width: 500px;
+    min-height: 500px;
   }
 `;

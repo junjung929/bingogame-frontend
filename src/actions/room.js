@@ -46,16 +46,18 @@ export const createRoom = maxUser => {
   const request = axios(config);
 
   return dispatch => {
-    return request
-      .then(({ data }) => {
-        dispatch({
-          type: CREATE_ROOM,
-          payload: data
+    return new Promise((resolve, reject) => {
+      request
+        .then(({ data }) => {
+          dispatch({
+            type: CREATE_ROOM,
+            payload: data
+          });
+          resolve(data);
+        })
+        .catch(err => {
+          reject(err);
         });
-        return data;
-      })
-      .catch(err => {
-        return err;
-      });
+    });
   };
 };

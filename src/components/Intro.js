@@ -17,7 +17,7 @@ const Intro = () => {
         </strong>
         <br />- Vingo is the bingo platform in virtual environment.
       </p>
-      <p>Invite your game with friends!</p>
+      <p>Invite your friends and enjoy!</p>
     </Segment>
   );
 };

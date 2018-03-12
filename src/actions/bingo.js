@@ -2,13 +2,18 @@ import { BINGO_START, ADD_SELECTED, BINGO_UPDATE } from "constants/ActionTypes";
 import { createAction } from "redux-actions";
 import { randomArrayGenerate } from "../components/functions";
 
-export const bingoStart = length => {
+export const bingoStart = (length, init) => {
   return (dispatch, getState) => {
     const { bingo } = getState();
     dispatch({
       type: BINGO_START,
-      payload: randomArrayGenerate(length)
+      payload: randomArrayGenerate(length, init)
     });
+    return new Promise(resolve =>
+      setTimeout(() => {
+        resolve("done");
+      }, 1000)
+    );
   };
 };
 export const addSelected = selectedNum => {

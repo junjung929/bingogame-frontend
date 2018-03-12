@@ -11,9 +11,9 @@ const Top = styled.div`
 const Logo = styled.div`
   font-family: Arial, Helvetica, sans-serif;
   height: auto;
-  font-size: 3em;
+  font-size: 4em;
   color: #ff0066;
-  font-weight: 600;
+  font-weight: 700;
 `;
 const Header = () => {
   return (

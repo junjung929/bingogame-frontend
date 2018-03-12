@@ -5,7 +5,7 @@ import SelectButton from "./SelectButton";
 const Procedure = ({ step, segment, onClick }) => {
   return (
     <div>
-      <Step.Group attached="top">
+      <Step.Group attached="top" unstackable>
         <Step
           className="hover"
           active={step === "create" ? true : false}

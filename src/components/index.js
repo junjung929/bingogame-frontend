@@ -12,3 +12,4 @@ export { default as ShareAndGo } from "./ShareAndGo";
 
 
 export { default as NotFound } from "./NotFound";
+export { default as Menu } from "./Menu";

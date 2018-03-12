@@ -10,8 +10,11 @@ import { connect } from "react-redux";
 import * as BingoAction from "actions/bingo";
 import * as RoomAction from "actions/room";
 import { socket } from "../constants";
+import { Redirect } from "react-router-dom";
 
-import { Segment, Loader } from "semantic-ui-react";
+import { Segment, Loader, Button, Dimmer } from "semantic-ui-react";
+
+const WINCNT = 3;
 
 class BingoContainer extends Component {
   static propTypes = {
@@ -21,93 +24,115 @@ class BingoContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userNickname: null,
+      roomId: undefined,
       isLoading: true,
-      isRoomExist: false
+      isRoomExist: false,
+      isBingoStart: false,
+      isRoomFull: false,
+      isYourTurn: false,
+      bingoCount: 0
     };
   }
-  componentDidMount() {
+  componentWillMount() {
+    console.log("bingo mount");
     const { room_id } = this.props.match.params;
     this.props
       .fetchRoom(room_id)
       .then(callback => {
-        this.setState({ isRoomExist: true, isLoading: false });
+        this.setState({ isRoomExist: true, isLoading: false, roomId: room_id });
+        this.props.bingoStart(25, "initial");
         socket.emit("bingo join", room_id, callback.maxUser);
-        this.props.bingoStart(25);
       })
       .catch(err => {
         this.setState({ isLoading: false });
-        console.log("err", err);
       });
   }
-  sendNumber = value => {
-    // this emits an event to the socket (your server) with an argument of 'red'
-    // you can make the argument any color you would like, or any kind of data you want to send.
-    socket.emit("selected", value);
-  };
-  restart = () => {
-    socket.emit("restart", 25);
-  };
-  checkBingo = numbers => {
-    const cnt = check(numbers);
-    console.log(cnt);
-    return cnt;
-  };
+  componentWillUnmount() {
+    console.log("bingo unmount");
+    const { roomId } = this.state;
+    socket.emit("bingo leave", roomId);
+  }
 
+  start = () => {
+    const { roomId } = this.state;
+    console.log("bingo start");
+    socket.emit("bingo start", 25, roomId);
+  };
   render() {
-    const { isLoading, isRoomExist } = this.state;
-    if (isLoading) {
+    const {
+      isLoading,
+      isRoomExist,
+      isBingoStart,
+      isRoomFull,
+      isYourTurn,
+      bingoCount
+    } = this.state;
+    const { numbers } = this.props.bingo;
+    socket.on("Room Full", roomFull => {
+      if (roomFull) this.setState({ isRoomFull: true });
+    });
+    if (isRoomFull) {
+      alert(
+        "This game has already full of players.\nPlease create another game."
+      );
+      return <Redirect from={this.props.match.url} to="/create" />;
+    }
+    if (isLoading && !isBingoStart) {
       return <Loader inline active />;
     }
     if (!isRoomExist) {
       return <NotFound />;
     }
-    // socket.on is another method that checks for incoming events from the server
-    // This method is looking for the event 'change color'
-    // socket.on takes a callback function for the first argument
-    socket.on("selected", value => {
-      // setting the color of our button
-      const isAlreadySeleted = this.props.bingo.selected.find(num => {
-        return num === value;
+    socket.on("bingo start", size => {
+      console.log("bingo started");
+      /* this.setState({
+        isLoading: true,
+        isBingoStart: true
       });
-      if (!isAlreadySeleted) {
-        this.props.addSelected(value);
-        const a = _.map(this.props.bingo.numbers, (row, i) => {
-          return _.map(row, (col, j) => {
-            if (col.value === parseInt(value)) {
-              col.selected = true;
-            }
-            return col;
-          });
-        });
-        this.props.bingoUpdate(a);
-        const result = this.checkBingo(a);
-        if (result >= 3) {
-          // socket.emit("bingo end", `Player win`);
-        }
-      }
+      this.props.bingoStart(25).then(() => {
+        this.setState({ isLoading: false });
+      }); */
     });
+    /*
+    if (bingoCount >= WINCNT) {
+      this.setState({ bingoCount: 0 });
+      socket.on("bingo end", message => {
+        // setting the color of our button
+        console.log("bingo end ", message);
+      });
+    }
 
-    socket.on("restart", size => {
-      // setting the color of our button
-      this.props.bingoStart(size);
-    });
-    socket.on("bingo end", message => {
-      // setting the color of our button
-      console.log(message);
-    });
+    if (!isYourTurn) {
+      socket.on("your turn", isYou => {
+        if (isYou) {
+          this.setState({ isYourTurn: true });
+        }
+        // setting the color of our button
+        console.log("your turn ", isYou);
+      });
+      socket.on("number selected", value => {
+        this.checkBingo(numbers, value);
+      });
+    } */
+
     return (
-      <Segment>
-        <button onClick={this.restart}>Restart</button>
-        <br />
-        <br />
-        <br />
-        <br />
+      <Segment basic>
+        <Button
+          onClick={this.start}
+          content={isBingoStart ? "Restart Game" : "Start Game"}
+        />
         <Bingo
+          className="bingo-board"
+          disabled={isBingoStart && isYourTurn ? false : true}
           numbers={this.props.bingo.numbers}
           sendNumber={e => {
             this.sendNumber(e.target.value);
           }}
         />
+        <Dimmer active={isLoading} inverted>
+          <Loader>Loading</Loader>
+        </Dimmer>
       </Segment>
     );
   }

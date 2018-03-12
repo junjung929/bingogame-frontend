@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+/* import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import PropTypes from "prop-types";
 import { Lobby, Login } from "components";
@@ -85,3 +85,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LobbyContainer);
+ */

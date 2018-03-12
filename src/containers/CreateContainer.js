@@ -10,11 +10,11 @@ import { Procedure, Header, Intro, SelectButton, ShareAndGo } from "components";
 
 import { Container, Segment, Transition } from "semantic-ui-react";
 const options = [
-  { key: 2, text: "2 people", value: 2 },
+  { key: 2, text: "2 people - min", value: 2 },
   { key: 3, text: "3 people", value: 3 },
   { key: 4, text: "4 people", value: 4 },
   { key: 5, text: "5 people", value: 5 },
-  { key: 6, text: "6 people", value: 6 }
+  { key: 6, text: "6 people - max", value: 6 }
 ];
 class CreateContainer extends Component {
   static propTypes = {
@@ -46,16 +46,24 @@ class CreateContainer extends Component {
     this.props
       .createRoom(maxUser)
       .then(callback => {
-        console.log(callback);
         const { id } = callback;
         this.setState({ roomId: id, step: "share" });
       })
       .catch(err => {
-        console.log(err);
+        alert(err);
       });
   };
   onBackToCreate = () => {
     this.setState({ step: "create" });
+  };
+  onCopyClick = () => {
+    /* Get the text field */
+    const copyText = document.getElementById("myInput");
+    /* Select the text field */
+    copyText.select();
+
+    /* Copy the text inside the text field */
+    document.execCommand("Copy");
   };
   render() {
     const { isCreated, maxUser } = this.props.room;
@@ -77,20 +85,22 @@ class CreateContainer extends Component {
     );
     if (step === "share") {
       segment = (
-        <ShareAndGo roomId={roomId ? roomId : null} maxUser={maxUser} />
+        <ShareAndGo
+          roomId={roomId ? roomId : null}
+          maxUser={maxUser}
+          onCopyClick={this.onCopyClick}
+        />
       );
     }
     return (
-      <div>
-        <Segment basic>
-          <Intro />
-          <Procedure
-            step={step}
-            segment={segment}
-            onClick={this.onBackToCreate}
-          />
-        </Segment>
-      </div>
+      <Segment basic>
+        {step === "create" ? <Intro /> : null}
+        <Procedure
+          step={step}
+          segment={segment}
+          onClick={this.onBackToCreate}
+        />
+      </Segment>
     );
   }
 }

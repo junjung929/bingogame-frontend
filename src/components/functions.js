@@ -24,8 +24,14 @@ export const matrix = (numbers, row) => {
   return b;
 };
 
-export const randomArrayGenerate = length => {
+export const randomArrayGenerate = (length, init) => {
   const numbers = [];
+  if (init === "initial") {
+    for (let i = 1; i <= length; i++) {
+      numbers.push("");
+    }
+    return matrix(shuffle(numbers), Math.sqrt(length));
+  }
   for (let i = 1; i <= length; i++) {
     numbers.push(i);
   }

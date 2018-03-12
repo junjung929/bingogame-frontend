@@ -35,6 +35,7 @@ const SelectButton = ({
       </div>
       <br />
       <Button
+        size="large"
         icon="plus"
         labelPosition="right"
         primary

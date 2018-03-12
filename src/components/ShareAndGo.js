@@ -33,7 +33,7 @@ import {
   EmailIcon
 } from "react-share";
 import { Link } from "react-router-dom";
-import { Segment, Icon, Button } from "semantic-ui-react";
+import { Input, Segment, Icon, Button, Popup } from "semantic-ui-react";
 import styled from "styled-components";
 
 const ShareIcons = styled.div`
@@ -46,7 +46,7 @@ const ShareButton = styled.div`
   }
 `;
 const size = 32;
-const ShareAndGo = ({ roomId, maxUser }) => {
+const ShareAndGo = ({ roomId, maxUser, onCopyClick }) => {
   const url = `/bingo/${roomId}`;
   const shareLink = `${window.location.host}${url}`;
   const shareItems = [
@@ -60,10 +60,21 @@ const ShareAndGo = ({ roomId, maxUser }) => {
       )
     },
     {
+      name: "Twitter",
+      content: (
+        <TwitterShareButton
+          url={shareLink}
+          title={shareLink}
+          children={<TwitterIcon size={size} />}
+        />
+      )
+    },
+    {
       name: "Facebook",
       content: (
         <FacebookShareButton
           url={shareLink}
+          quote={shareLink}
           children={<FacebookIcon size={size} />}
         />
       )
@@ -94,9 +105,24 @@ const ShareAndGo = ({ roomId, maxUser }) => {
         <strong>Created!</strong>
       </h3>
       <p>
-        Share your bingo game with your friends via...(Max player: {maxUser})
+        Share your bingo game with your friends via...<br />
+        (Max player: {maxUser} people)
       </p>
-
+      <Input
+        id="myInput"
+        value={shareLink}
+        action={
+          <Popup
+            on="click"
+            trigger={
+              <Button color="teal" onClick={onCopyClick} content="Copy" />
+            }
+            content="Copied!"
+          />
+        }
+      />
+      <br />
+      <br />
       <ShareIcons>
         {_.map(shareItems, item => {
           return (
@@ -119,6 +145,7 @@ const ShareAndGo = ({ roomId, maxUser }) => {
         icon="arrow right"
         labelPosition="right"
         content="Play"
+        size="large"
       />
     </Segment>
   );
