@@ -7,7 +7,8 @@ export { default as Login } from "./Login";
 export { default as Header } from "./Header";
 export { default as Intro } from "./Intro";
 export { default as Procedure } from "./Procedure";
-export { default as SelectButton } from "./SelectButton";
+export { default as Input } from "./Input";
+export { default as Select } from "./Select";
 export { default as ShareAndGo } from "./ShareAndGo";
 
 

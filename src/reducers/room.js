@@ -1,10 +1,12 @@
 import { CREATE_ROOM, FETCH_ROOM } from "constants/ActionTypes";
 
 const initialState = {
+  roomTitle: undefined,
   maxUser: 0,
   id: undefined,
   isCreated: false,
-  isExist: false
+  isExist: false,
+  connectedUsers: 0
 };
 
 export default function room(state = initialState, action) {
@@ -12,8 +14,10 @@ export default function room(state = initialState, action) {
     case CREATE_ROOM:
       return {
         ...state,
+        roomTitle: action.payload.roomTitle,
         maxUser: action.payload.maxUser,
         id: action.payload.id,
+        connectedUsers: 0,
         isCreated: true
       };
     case FETCH_ROOM:
@@ -21,6 +25,7 @@ export default function room(state = initialState, action) {
         ...state,
         maxUser: action.payload.maxUser,
         id: action.payload.id,
+        connectedUsers: action.payload.connectedUsers,
         isExist: true
       };
     default:

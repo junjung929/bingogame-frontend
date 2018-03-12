@@ -1,10 +1,15 @@
-import { BINGO_START, ADD_SELECTED, BINGO_UPDATE } from "constants/ActionTypes";
-import { createAction } from "redux-actions";
+import {
+  BINGO_START,
+  ADD_SELECTED,
+  BINGO_UPDATE,
+  ADD_USER
+} from "constants/ActionTypes";
+// import { createAction } from "redux-actions";
 import { randomArrayGenerate } from "../components/functions";
 
 export const bingoStart = (length, init) => {
   return (dispatch, getState) => {
-    const { bingo } = getState();
+    // const { bingo } = getState();
     dispatch({
       type: BINGO_START,
       payload: randomArrayGenerate(length, init)
@@ -14,6 +19,15 @@ export const bingoStart = (length, init) => {
         resolve("done");
       }, 1000)
     );
+  };
+};
+export const bingoUpdate = newNumbers => {
+  return (dispatch, getState) => {
+    // const { bingo } = getState();
+    dispatch({
+      type: BINGO_UPDATE,
+      payload: newNumbers
+    });
   };
 };
 export const addSelected = selectedNum => {
@@ -27,12 +41,12 @@ export const addSelected = selectedNum => {
     });
   };
 };
-export const bingoUpdate = newNumbers => {
+export const addUser = user => {
   return (dispatch, getState) => {
     const { bingo } = getState();
     dispatch({
-      type: BINGO_UPDATE,
-      payload: newNumbers
+      type: ADD_USER,
+      payload: user
     });
   };
 };

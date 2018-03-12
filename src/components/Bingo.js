@@ -2,12 +2,7 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import pure from "recompose/pure";
-import styled from "styled-components";
 import { Grid, Button, Loader, Segment, Icon } from "semantic-ui-react";
-
-const Intro = styled.p`
-  font-size: large;
-`;
 
 const Bingo = ({ numbers, sendNumber, disabled, className }) => {
   if (numbers.length === 0) {

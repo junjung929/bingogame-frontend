@@ -32,14 +32,15 @@ export const fetchRoom = roomId => {
     });
   };
 };
-export const createRoom = maxUser => {
+export const createRoom = (maxUser, roomTitle) => {
   const query = `/create`;
   const url = `${URL}${query}`;
   const config = {
     method: "post",
     url,
     params: {
-      maxUser
+      maxUser,
+      roomTitle
     }
   };
 

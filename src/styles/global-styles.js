@@ -47,6 +47,8 @@ injectGlobal`
   }
 
   .bingo-board {
+    margin-left: auto !important;
+    margin-right: auto !important;
     max-width: 500px;
     min-height: 500px;
   }

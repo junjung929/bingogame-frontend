@@ -1,6 +1,5 @@
 import React from "react";
-import { Step, Icon, Segment, Image } from "semantic-ui-react";
-import SelectButton from "./SelectButton";
+import { Step, Icon, Segment } from "semantic-ui-react";
 
 const Procedure = ({ step, segment, onClick }) => {
   return (

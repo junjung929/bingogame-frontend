@@ -1,4 +1,3 @@
-"use strict";
 import _ from "lodash";
 // simple fisher yates implementation
 export const shuffle = deck => {
@@ -48,7 +47,7 @@ export const check = numbers => {
   }
   _.map(numbers, (row, i) => {
     let rowSelected = 0;
-    const rowMatched = _.map(row, (col, j) => {
+    _.map(row, (col, j) => {
       if (col.selected === true) {
         rowSelected++;
         colSelected[j]++;

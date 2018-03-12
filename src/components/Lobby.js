@@ -1,4 +1,4 @@
-import _ from "lodash";
+/* import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import pure from "recompose/pure";
@@ -54,3 +54,4 @@ const Lobby = ({
 Lobby.propTypes = {};
 
 export default pure(Lobby);
+ */

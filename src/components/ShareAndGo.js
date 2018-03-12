@@ -4,36 +4,37 @@ import PropTypes from "prop-types";
 import {
   //button
   FacebookShareButton,
-  GooglePlusShareButton,
-  LinkedinShareButton,
+  EmailShareButton,
   TwitterShareButton,
   TelegramShareButton,
   WhatsappShareButton,
-  PinterestShareButton,
-  VKShareButton,
-  OKShareButton,
-  RedditShareButton,
-  TumblrShareButton,
-  LivejournalShareButton,
-  EmailShareButton,
+  // GooglePlusShareButton,
+  // LinkedinShareButton,
+  // PinterestShareButton,
+  // VKShareButton,
+  // OKShareButton,
+  // RedditShareButton,
+  // TumblrShareButton,
+  // LivejournalShareButton,
+
   //icons
   FacebookIcon,
   TwitterIcon,
   TelegramIcon,
   WhatsappIcon,
-  GooglePlusIcon,
-  LinkedinIcon,
-  PinterestIcon,
-  VKIcon,
-  OKIcon,
-  RedditIcon,
-  TumblrIcon,
-  LivejournalIcon,
-  MailruIcon,
   EmailIcon
+  // GooglePlusIcon,
+  // LinkedinIcon,
+  // PinterestIcon,
+  // VKIcon,
+  // OKIcon,
+  // RedditIcon,
+  // TumblrIcon,
+  // LivejournalIcon,
+  // MailruIcon,
 } from "react-share";
 import { Link } from "react-router-dom";
-import { Input, Segment, Icon, Button, Popup } from "semantic-ui-react";
+import { Input, Segment, Button, Popup } from "semantic-ui-react";
 import styled from "styled-components";
 
 const ShareIcons = styled.div`
@@ -138,16 +139,23 @@ const ShareAndGo = ({ roomId, maxUser, onCopyClick }) => {
       <br />
       <br />
       <Button
-        basic
-        color="pink"
         as={Link}
         to={url}
         icon="arrow right"
         labelPosition="right"
         content="Play"
         size="large"
+        style={{ backgroundColor: "#84468B", color: "white" }}
       />
     </Segment>
   );
+};
+
+const { number, string, func } = PropTypes;
+
+ShareAndGo.propTypes = {
+  maxUser: number.isRequired,
+  roomId: string.isRequired,
+  onCopyClick: func.isRequired
 };
 export default ShareAndGo;

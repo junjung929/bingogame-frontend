@@ -1,6 +1,6 @@
 import React from "react";
 import { BingoContainer, CreateContainer, HomeContainer } from "containers";
-import { Header, Menu } from "components";
+import { Menu } from "components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function Routes() {

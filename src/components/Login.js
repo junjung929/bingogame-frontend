@@ -1,4 +1,4 @@
-import _ from "lodash";
+/* import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import pure from "recompose/pure";
@@ -13,7 +13,7 @@ const Login = ({ numbers, sendNumber, saveProfile, inputProfile }) => {
     <Form>
       <Form.Field inline>
         <label>Nickname:</label>
-        <Input placeholder="input your nickname" action="Create"/>
+        <Input placeholder="input your nickname" action="Create" />
       </Form.Field>
     </Form>
   );
@@ -22,3 +22,4 @@ const Login = ({ numbers, sendNumber, saveProfile, inputProfile }) => {
 Login.propTypes = {};
 
 export default pure(Login);
+ */

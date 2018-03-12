@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Segment, Button, Icon, Header } from "semantic-ui-react";
+import { Button, Icon, Header } from "semantic-ui-react";
 const NotFount = () => {
   return (
     <Header as="h2" icon>

@@ -6,9 +6,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as RoomActions from "actions/room";
 
-import { Procedure, Header, Intro, SelectButton, ShareAndGo } from "components";
+import { Procedure, Intro, Select, ShareAndGo, Input } from "components";
 
-import { Container, Segment, Transition } from "semantic-ui-react";
+import { Segment, Form, Button } from "semantic-ui-react";
 const options = [
   { key: 2, text: "2 people - min", value: 2 },
   { key: 3, text: "3 people", value: 3 },
@@ -24,6 +24,7 @@ class CreateContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      roomTitle: "",
       maxUser: 0,
       roomId: undefined,
       step: "create"
@@ -35,16 +36,23 @@ class CreateContainer extends Component {
       this.setState({ roomId: id, step: "share" });
     }
   }
+  onTitleChange = ({ target }) => {
+    const { value } = target;
+    this.setState({ roomTitle: value });
+  };
   onMaxChange = (e, { value }) => {
     this.setState({ maxUser: value });
   };
   onSubmit = () => {
-    const { maxUser } = this.state;
+    const { maxUser, roomTitle } = this.state;
+    if (roomTitle.length < 5) {
+      return alert("Please input at least 5 letters for the title.");
+    }
     if (maxUser < 1) {
-      return alert("Please select the number of users ");
+      return alert("Please select the number of users.");
     }
     this.props
-      .createRoom(maxUser)
+      .createRoom(maxUser, roomTitle)
       .then(callback => {
         const { id } = callback;
         this.setState({ roomId: id, step: "share" });
@@ -54,7 +62,12 @@ class CreateContainer extends Component {
       });
   };
   onBackToCreate = () => {
-    this.setState({ step: "create" });
+    this.setState({
+      step: "create",
+      roomTitle: "",
+      roomId: undefined,
+      maxUser: 0
+    });
   };
   onCopyClick = () => {
     /* Get the text field */
@@ -66,28 +79,48 @@ class CreateContainer extends Component {
     document.execCommand("Copy");
   };
   render() {
-    const { isCreated, maxUser } = this.props.room;
-    const { roomId, step } = this.state;
+    const { roomId, step, roomTitle, maxUser } = this.state;
     let segment = (
       <div className="text-center">
         <p>
           Choose the maximum number of players.<br />
           And create your game!
         </p>
-        <SelectButton
-          label="Play with: "
-          placeholder="Select the number of users"
-          options={options}
-          onChange={this.onMaxChange}
-          onClick={this.onSubmit}
-        />
+        <Form onSubmit={this.onSubmit}>
+          <Input
+            label="Title: "
+            name="room_title"
+            value={roomTitle}
+            type="text"
+            onChange={this.onTitleChange}
+            placeholder="Input your title"
+          />
+          <Select
+            name="max_user"
+            type="number"
+            label="Play with: "
+            placeholder="Select the number of users"
+            options={options}
+            onChange={this.onMaxChange}
+            value={maxUser}
+          />
+          <Button
+            type="submit"
+            size="large"
+            style={{ backgroundColor: "#84468B", color: "white" }}
+            icon="plus"
+            labelPosition="right"
+            content="Create"
+          />
+        </Form>
       </div>
     );
     if (step === "share") {
       segment = (
         <ShareAndGo
           roomId={roomId ? roomId : null}
-          maxUser={maxUser}
+          maxUser={parseInt(this.props.room.maxUser)}
+          roomTitle={roomTitle}
           onCopyClick={this.onCopyClick}
         />
       );
