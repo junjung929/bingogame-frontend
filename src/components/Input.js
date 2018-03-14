@@ -2,11 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "semantic-ui-react";
 
-const Input = ({ name, value, label, type, onChange, placeholder }) => (
+const Input = ({
+  name,
+  value,
+  label,
+  type,
+  onChange,
+  placeholder,
+  style,
+  action
+}) => (
   <Form.Field>
     <Form.Input
+      style={style}
       inline
       label={label}
+      action={action}
       {...{ name, value, type, onChange, placeholder }}
     />
   </Form.Field>

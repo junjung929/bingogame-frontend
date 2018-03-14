@@ -52,4 +52,13 @@ injectGlobal`
     max-width: 500px;
     min-height: 500px;
   }
+
+  .user-list.ui.sidebar{
+    display: flex;
+    flex-direction: column;
+    top: 40px;
+    z-index: 1001;
+    height: auto !important;
+    bottom: 40px !important;
+  }
 `;

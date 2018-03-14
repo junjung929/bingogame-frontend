@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import pure from "recompose/pure";
 import { Grid, Button, Loader, Segment, Icon } from "semantic-ui-react";
 
-const Bingo = ({ numbers, sendNumber, disabled, className }) => {
+const Bingo = ({ numbers, onClickNumber, disabled, className }) => {
   if (numbers.length === 0) {
     return <Loader inline active />;
   }
@@ -22,6 +22,7 @@ const Bingo = ({ numbers, sendNumber, disabled, className }) => {
         return (
           <Grid.Row key={`bingo-row-${i}`}>
             {_.map(row, (col, j) => {
+              console.log(col);
               return (
                 <Grid.Column key={`bingo-col-${j}`}>
                   <Button
@@ -33,7 +34,7 @@ const Bingo = ({ numbers, sendNumber, disabled, className }) => {
                     }}
                     size="big"
                     value={col.value}
-                    onClick={sendNumber}
+                    onClick={onClickNumber}
                     disabled={disabled ? true : col.selected}
                     content={
                       col.selected ? (
@@ -54,7 +55,7 @@ const Bingo = ({ numbers, sendNumber, disabled, className }) => {
 };
 
 Bingo.propTypes = {
-  sendNumber: PropTypes.func.isRequired,
+  onClickNumber: PropTypes.func.isRequired,
   numbers: PropTypes.array.isRequired
 };
 

@@ -1,7 +1,15 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Bingo, randomArrayGenerate, NotFound, Input } from "../components";
+import {
+  Bingo,
+  randomArrayGenerate,
+  NotFound,
+  Input,
+  Username,
+  UserList,
+  Menu
+} from "../components";
 import { check } from "../components/functions";
 import { createStructuredSelector, createSelector } from "reselect";
 
@@ -20,7 +28,8 @@ import {
   Dimmer,
   Form,
   Icon,
-  Popup
+  Popup,
+  Sidebar
 } from "semantic-ui-react";
 
 const WINCNT = 3;
@@ -28,20 +37,29 @@ const WINCNT = 3;
 class BingoContainer extends Component {
   static propTypes = {
     bingoStart: PropTypes.func.isRequired,
-    bingo: PropTypes.object.isRequired
+    bingo: PropTypes.object.isRequired,
+    room: PropTypes.object.isRequired
   };
   constructor(props) {
     super(props);
     this.state = {
+      userId: "",
       userNickname: "",
       roomId: undefined,
       isLoading: true,
       isRoomExist: false,
       isBingoStart: false,
       isRoomFull: false,
-      isYourTurn: false,
+      whoseTurn: false,
       bingoCount: 0,
-      userList: []
+      userList: [],
+      role: undefined,
+      isReady: false,
+      readyCount: 1,
+      visible: false,
+      chat: "",
+      messages: [],
+      isSending: false
     };
   }
   componentDidMount() {
@@ -53,21 +71,92 @@ class BingoContainer extends Component {
         this.setState({ isRoomExist: true, isLoading: false, roomId: room_id });
         this.props.bingoStart(25, "initial");
         socket.emit("bingo join", room_id, callback.maxUser);
+        socket.on("bingo join", userId => {
+          this.setState({ userId });
+        });
+        socket.on("your role", role => {
+          this.setState({ role });
+        });
       })
       .catch(err => {
         this.setState({ isLoading: false });
       });
+
+    socket.on("users update", users => {
+      console.log("users update");
+      this.setState({ userList: users });
+    });
+
+    socket.on("new user", id => {
+      console.log(`new user(${id}) joined the game`);
+    });
+
+    socket.on("bingo leave", id => {
+      console.log(`Userser(${id}) left the game`);
+    });
+
+    socket.on("bingo ready", readyCnt => {
+      console.log(`${readyCnt} people are ready`);
+      this.setState({ readyCount: readyCnt, isLoading: false });
+    });
+
+    socket.on("bingo start", size => {
+      console.log("bingo started");
+      this.props.bingoStart(25).then(() => {
+        this.setState({ isBingoStart: true, isLoading: false });
+      });
+    });
+
+    socket.on("whose turn", whose => {
+      this.setState({ whoseTurn: whose });
+      console.log(`It's ${whose === "you" ? "your" : `${whose}'s`} turn`);
+    });
+
+    socket.on("number selected", selected => {
+      const { whoseTurn } = this.state;
+      console.log(`${whoseTurn} chose ${selected}`);
+      this.setState({ isLoading: false });
+      const { numbers } = this.props.bingo;
+      _.map(numbers, rows => {
+        _.map(rows, col => {
+          if (col.value === parseInt(selected)) {
+            col.selected = true;
+          }
+        });
+      });
+      setTimeout(() => {
+        this.props.bingoUpdate(numbers);
+        const cnt = check(numbers);
+        console.log(cnt);
+      }, 1000);
+      // this.props.bingoUpdate(newAry);
+      // console.log(newAry);
+    });
+    socket.on("message", msg => {
+      const { messages } = this.state;
+
+      setTimeout(() => {
+        if (msg.message != "") {
+          messages.unshift(msg);
+          console.log(messages);
+          console.log(msg);
+          this.setState({ messages, isSending: false });
+        }
+      }, 1000);
+    });
   }
   componentWillUnmount() {
     console.log("bingo unmount");
     const { roomId } = this.state;
     socket.emit("bingo leave", roomId);
   }
-  onNickChange = ({ target }) => {
-    this.setState({ userNickname: target.value });
+
+  onNickChange = ({ target: { value } }) => {
+    this.setState({ userNickname: value });
   };
   onSubmit = () => {
-    const { userNickname } = this.state;
+    const { userNickname, userList, userId, isReady } = this.state;
+
     if (userNickname.length < 5) {
       return alert("Username should be longer than 5 letters.");
     }
@@ -78,23 +167,53 @@ class BingoContainer extends Component {
       this.setState({ isLoading: false });
     }, 1000);
   };
-  start = () => {
-    const { roomId } = this.state;
-    console.log("bingo start");
-    socket.emit("bingo start", 25, roomId);
+  onReady = () => {
+    const { isReady } = this.state;
+    socket.emit("bingo ready", !isReady);
+    this.setState({ isReady: !isReady, isLoading: true, isBingoStart: true });
   };
+  start = () => {
+    console.log("bingo start");
+    socket.emit("bingo start", 25);
+    this.setState({ isLoading: true, isBingoStart: true });
+  };
+  onSelectNumber = ({ target: { value } }) => {
+    this.setState({ isLoading: true });
+    socket.emit("number select", value);
+  };
+  onChatChange = ({ target: { value } }) => {
+    this.setState({ chat: value });
+  };
+  onSendSubmit = () => {
+    socket.emit("message", this.state.chat);
+    this.setState({ isSending: true, chat: "" });
+  };
+  toggleVisibility = () => {
+    const { visible } = this.state;
+    this.setState({ visible: !visible });
+  };
+
   render() {
     const {
+      userId,
       isLoading,
       isRoomExist,
       isBingoStart,
       isRoomFull,
-      isYourTurn,
+      whoseTurn,
       bingoCount,
       userNickname,
-      userList
+      userList,
+      role,
+      isReady,
+      readyCount,
+      visible,
+      chat,
+      messages,
+      isSending
     } = this.state;
-    const { numbers, user, maxUser } = this.props.bingo;
+    const { numbers, user } = this.props.bingo;
+    const { maxUser } = this.props.room;
     socket.on("Room Full", roomFull => {
       if (roomFull) this.setState({ isRoomFull: true });
     });
@@ -110,45 +229,17 @@ class BingoContainer extends Component {
     if (!isRoomExist) {
       return <NotFound />;
     }
+
     if (!user) {
       return (
-        <Segment basic textAlign="center">
-          <Form onSubmit={this.onSubmit}>
-            <Input
-              name="username"
-              label="Username: "
-              placeholder="Input your nick name"
-              value={userNickname}
-              type="text"
-              onChange={this.onNickChange}
-            />
-            <Button
-              type="submit"
-              primary
-              content="Check"
-              icon={<Icon name="check" />}
-            />
-          </Form>
-        </Segment>
+        <Username
+          onSubmit={this.onSubmit}
+          onChange={this.onNickChange}
+          username={userNickname}
+        />
       );
     }
-    socket.on("new user", id => {
-      userList.push({ id });
-      this.setState({ userList });
-      console.log(userList);
-      console.log(`new user(${id}) joined the game`);
-    });
-    socket.on("bingo start", size => {
-      console.log("bingo started");
-      this.bingoStart();
-      /* this.setState({
-        isLoading: true,
-        isBingoStart: true
-      });
-      this.props.bingoStart(25).then(() => {
-        this.setState({ isLoading: false });
-      }); */
-    });
+
     /*
     if (bingoCount >= WINCNT) {
       this.setState({ bingoCount: 0 });
@@ -156,44 +247,81 @@ class BingoContainer extends Component {
         // setting the color of our button
         console.log("bingo end ", message);
       });
-    }
+    }*/
 
-    if (!isYourTurn) {
-      socket.on("your turn", isYou => {
-        if (isYou) {
-          this.setState({ isYourTurn: true });
-        }
-        // setting the color of our button
-        console.log("your turn ", isYou);
-      });
-      socket.on("number selected", value => {
-        this.checkBingo(numbers, value);
-      });
-    } */
-
+    /* socket.on("number selected", value => {
+      this.checkBingo(numbers, value);
+    }); */
+    const isAllReady = readyCount === maxUser;
+    const menus = [
+      {
+        name: "users",
+        content: <Button content="See Users" onClick={this.toggleVisibility} />,
+        position: "left"
+      },
+      {
+        name: "start",
+        position: "right",
+        content:
+          role === "host" ? (
+            <Popup
+              trigger={
+                <Button
+                  primary={isAllReady ? true : false}
+                  onClick={isAllReady ? this.start : null}
+                  content={isBingoStart ? "Restart Game" : "Start Game"}
+                />
+              }
+              content={
+                isAllReady
+                  ? "Press to start"
+                  : "Game can be begun when all players are ready."
+              }
+              basic
+            />
+          ) : (
+            <Button
+              onClick={this.onReady}
+              content="Ready"
+              color={isReady ? "red" : "blue"}
+            />
+          )
+      }
+    ];
+    console.log(userId);
     return (
       <Container textAlign="center">
+        <UserList
+          currId={userId}
+          visible={visible}
+          userList={userList}
+          toggle={this.toggleVisibility}
+          messages={messages}
+          chat={chat}
+          onChatChange={this.onChatChange}
+          onSendSubmit={this.onSendSubmit}
+          isSending={isSending}
+          modalContent={
+            <Username
+              onSubmit={this.onSubmit}
+              onChange={this.onNickChange}
+              username={userNickname}
+            />
+          }
+        />
         <Segment basic>
-          <Popup
-            trigger={
-              <Button
-                onClick={this.start}
-                disabled={userList.length !== maxUser}
-                content={isBingoStart ? "Restart Game" : "Start Game"}
-              />
-            }
-            position="top"
-            content="Game can be begun when all players are ready."
-            basic
-          />
-
           <Bingo
             className="bingo-board"
-            disabled={isBingoStart && isYourTurn ? false : true}
+            disabled={isBingoStart && whoseTurn === "you" ? false : true}
             numbers={this.props.bingo.numbers}
-            sendNumber={e => {
-              this.sendNumber(e.target.value);
-            }}
+            onClickNumber={this.onSelectNumber}
+          />
+          <Menu
+            style={{ zIndex: 1002 }}
+            fixed="bottom"
+            inverted
+            borderless
+            menus={menus}
           />
           <Dimmer active={isLoading} inverted>
             <Loader>Loading</Loader>

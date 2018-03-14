@@ -1,23 +1,38 @@
+import _ from "lodash";
 import React from "react";
 import { Menu } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import PropTypes from "prop-types";
 
-const Logo = styled.span`
-  color: #ff0066;
-  font-weight: bold;
-`;
-const MenuBar = () => {
+const MenuBar = ({ menus, fixed, inverted, color, style, borderless }) => {
   return (
-    <Menu fixed="top">
-      <Menu.Item name="home" as={Link} to="/">
-        <Logo>VINGO</Logo>
-      </Menu.Item>
-
-      <Menu.Item name="create" as={Link} to="/create">
-        Create New Room
-      </Menu.Item>
+    <Menu
+      fixed={fixed}
+      inverted={inverted}
+      color={color}
+      borderless={borderless}
+      style={style}
+    >
+      {_.map(menus, menu => {
+        return (
+          <Menu.Item
+            key={`menu-${fixed}-${menu.name}`}
+            name={menu.name}
+            as={menu.as}
+            to={menu.to}
+            content={menu.content}
+            onClick={menu.onClick}
+            position={menu.position}
+            color={menu.color}
+            style={menu.style}
+          />
+        );
+      })}
     </Menu>
   );
+};
+const { array, string } = PropTypes;
+
+MenuBar.propsTypes = {
+  menus: array.isRequired
 };
 export default MenuBar;

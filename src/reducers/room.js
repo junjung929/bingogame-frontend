@@ -15,7 +15,7 @@ export default function room(state = initialState, action) {
       return {
         ...state,
         roomTitle: action.payload.roomTitle,
-        maxUser: action.payload.maxUser,
+        maxUser: parseInt(action.payload.maxUser),
         id: action.payload.id,
         connectedUsers: 0,
         isCreated: true
@@ -23,7 +23,7 @@ export default function room(state = initialState, action) {
     case FETCH_ROOM:
       return {
         ...state,
-        maxUser: action.payload.maxUser,
+        maxUser: parseInt(action.payload.maxUser),
         id: action.payload.id,
         connectedUsers: action.payload.connectedUsers,
         isExist: true

@@ -39,6 +39,11 @@ export const addSelected = selectedNum => {
       type: ADD_SELECTED,
       payload: selected
     });
+    return new Promise(resolve =>
+      setTimeout(() => {
+        resolve(selected);
+      }, 1000)
+    );
   };
 };
 export const addUser = user => {
