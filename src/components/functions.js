@@ -14,10 +14,14 @@ export const matrix = (numbers, row) => {
   let a = [];
   let b = [];
   for (let i in numbers) {
-    a.push({ selected: false, value: numbers[i] });
-    if (i % row === row - 1) {
-      b.push(a);
-      a = [];
+    if (parseInt(i) === Math.floor(numbers.length / 2)) {
+      a.push({ selected: true, value: numbers[i] });
+    } else {
+      a.push({ selected: false, value: numbers[i] });
+      if (i % row === row - 1) {
+        b.push(a);
+        a = [];
+      }
     }
   }
   return b;
@@ -38,6 +42,7 @@ export const randomArrayGenerate = (length, init) => {
 };
 
 export const check = numbers => {
+  console.log(numbers);
   let cnt = 0,
     leftDigonal = 0,
     rightDigonal = 0;
@@ -57,12 +62,13 @@ export const check = numbers => {
         if (row.length - 1 - i === j) {
           rightDigonal++;
         }
-        if (colSelected[j] === 5) cnt++;
+        if (colSelected[j] === numbers.length) cnt++;
       }
     });
-    if (rowSelected === 5) cnt++;
-    if (leftDigonal === 5) cnt++;
-    if (rightDigonal === 5) cnt++;
+    if (rowSelected === numbers.length) cnt++;
+    if (leftDigonal === numbers.length) cnt++;
+    if (rightDigonal === numbers.length) cnt++;
   });
+  console.log(cnt);
   return cnt;
 };

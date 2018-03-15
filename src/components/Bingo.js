@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import pure from "recompose/pure";
 import { Grid, Button, Loader, Segment, Icon } from "semantic-ui-react";
 
-const Bingo = ({ numbers, onClickNumber, disabled, className }) => {
+const Bingo = ({ numbers, onClickNumber, disabled, className, children }) => {
   if (numbers.length === 0) {
     return <Loader inline active />;
   }
@@ -22,7 +22,23 @@ const Bingo = ({ numbers, onClickNumber, disabled, className }) => {
         return (
           <Grid.Row key={`bingo-row-${i}`}>
             {_.map(row, (col, j) => {
-              console.log(col);
+              if (
+                parseInt(i) === Math.floor(colNum / 2) &&
+                parseInt(j) === Math.floor(colNum / 2)
+              ) {
+                return (
+                  <Grid.Column
+                    key={`bingo-col-${j}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    Free<br />Space
+                  </Grid.Column>
+                );
+              }
               return (
                 <Grid.Column key={`bingo-col-${j}`}>
                   <Button

@@ -10,13 +10,14 @@ import { randomArrayGenerate } from "../components/functions";
 export const bingoStart = (length, init) => {
   return (dispatch, getState) => {
     // const { bingo } = getState();
+    const bingoBoard = randomArrayGenerate(length, init);
     dispatch({
       type: BINGO_START,
-      payload: randomArrayGenerate(length, init)
+      payload: bingoBoard
     });
     return new Promise(resolve =>
       setTimeout(() => {
-        resolve("done");
+        resolve(bingoBoard);
       }, 1000)
     );
   };
@@ -28,6 +29,11 @@ export const bingoUpdate = newNumbers => {
       type: BINGO_UPDATE,
       payload: newNumbers
     });
+    return new Promise(resolve =>
+      setTimeout(() => {
+        resolve(newNumbers);
+      }, 1000)
+    );
   };
 };
 export const addSelected = selectedNum => {

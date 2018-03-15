@@ -12,8 +12,7 @@ import {
   Sidebar,
   List,
   Header,
-  Loader,
-  Modal
+  Loader
 } from "semantic-ui-react";
 import shortid from "shortid";
 
@@ -32,11 +31,10 @@ const UserList = ({
   chat,
   onChatChange,
   onSendSubmit,
-  isSending,
-  modalContent
+  isSending
 }) => {
-  const keys = Object.keys(userList);
-  const filteredKeys = keys.filter(key => key !== "length");
+  const { users } = userList;
+  const keys = Object.keys(users);
   return (
     <Sidebar
       as={Segment}
@@ -60,23 +58,14 @@ const UserList = ({
           flexGrow: "1",
           overflowY: "auto",
           paddingLeft: "20px",
-          paddingRight: "0px"
+          paddingRight: "0px",
+          minHeight: "30px"
         }}
       >
-        {_.map(filteredKeys, key => {
-          const user = userList[key];
-          console.log(user.id);
-          console.log(currId);
+        {_.map(keys, key => {
+          const user = users[key];
           return (
             <List.Item key={user.id}>
-              {user.id !== currId ? (
-                <List.Content floated="right">
-                    <Modal
-                      trigger={<Button size="tiny" content="Nick Change" />}
-                      content={modalContent}
-                    />
-                </List.Content>
-              ) : null}
               <List.Icon
                 name={user.role === "host" ? "home" : "user"}
                 size="large"
@@ -105,11 +94,13 @@ const UserList = ({
         style={{ margin: "20px" }}
       />
       <Segment
+        id="msg-input"
         style={{
           flexGrow: "3",
           overflowY: "auto",
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
+          minHeight: "270px"
         }}
       >
         <div
@@ -118,7 +109,8 @@ const UserList = ({
             flexGrow: "3",
             overflowY: "auto",
             flexDirection: "column-reverse",
-            textAlign: "left"
+            textAlign: "left",
+            paddingBottom: "8px"
           }}
         >
           {_.map(messages, ({ from, message, textAlign }) => {
@@ -144,9 +136,19 @@ const UserList = ({
             onChange={onChatChange}
             placeholder="Type your message"
             type="text"
+            onClick={() => {
+              const msgInput = document.getElementById("msg-input");
+              msgInput.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+                inline: "end"
+              });
+            }}
             action={
               <Button
                 type="submit"
+                disabled={isSending}
+                style={{ backgroundColor: "#84468B", color: "white" }}
                 content={
                   isSending ? <Loader inline active size="tiny" /> : "Send"
                 }

@@ -16,3 +16,4 @@ export { default as UserList } from "./UserList";
 
 export { default as NotFound } from "./NotFound";
 export { default as Menu } from "./Menu";
+export { default as BottomMenu } from "./BottomMenu";

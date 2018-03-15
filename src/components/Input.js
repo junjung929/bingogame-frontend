@@ -14,11 +14,17 @@ const Input = ({
 }) => (
   <Form.Field>
     <Form.Input
-      style={style}
       inline
-      label={label}
-      action={action}
-      {...{ name, value, type, onChange, placeholder }}
+      {...{
+        style,
+        label,
+        action,
+        name,
+        value,
+        type,
+        onChange,
+        placeholder
+      }}
     />
   </Form.Field>
 );

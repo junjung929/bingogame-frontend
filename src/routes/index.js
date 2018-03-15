@@ -2,21 +2,12 @@ import React from "react";
 import { BingoContainer, CreateContainer, HomeContainer } from "containers";
 import { Menu, UserList } from "components";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import styled from "styled-components";
 
-const Logo = styled.span`
-  color: #ff0066;
-  font-weight: bold;
-`;
 function Routes() {
-  const menus = [
-    { name: "home", as: Link, to: "/", content: <Logo>VINGO</Logo> },
-    { name: "create", as: Link, to: "/create", content: "Create New Room" }
-  ];
   return (
     <Router>
       <div style={{ height: "100%" }}>
-        <Menu menus={menus} fixed="top" />
+        <Menu />
         <div className="flex-container">
           <Switch>
             <Route exact path="/" component={HomeContainer} />

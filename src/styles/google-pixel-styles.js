@@ -13,6 +13,9 @@ injectGlobal`
             max-width:360px;
             min-height:360px;
         }
+        .user-list > h2{
+            display: none;
+        }
     }
 
     /* Portrait */

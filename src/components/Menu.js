@@ -2,20 +2,24 @@ import _ from "lodash";
 import React from "react";
 import { Menu } from "semantic-ui-react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-const MenuBar = ({ menus, fixed, inverted, color, style, borderless }) => {
+const Logo = styled.span`
+  color: #ff0066;
+  font-weight: bold;
+`;
+const MenuBar = () => {
+  const menus = [
+    { name: "home", as: Link, to: "/", content: <Logo>VINGO</Logo> },
+    { name: "create", as: Link, to: "/create", content: "Create New Room" }
+  ];
   return (
-    <Menu
-      fixed={fixed}
-      inverted={inverted}
-      color={color}
-      borderless={borderless}
-      style={style}
-    >
+    <Menu fixed="top">
       {_.map(menus, menu => {
         return (
           <Menu.Item
-            key={`menu-${fixed}-${menu.name}`}
+            key={`menu-top-${menu.name}`}
             name={menu.name}
             as={menu.as}
             to={menu.to}

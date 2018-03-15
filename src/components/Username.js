@@ -3,9 +3,13 @@ import PropsTypes from "prop-types";
 import { Input } from "../components";
 import { Segment, Form, Button, Icon } from "semantic-ui-react";
 
-const Username = ({ onSubmit, username, onChange }) => {
+const Username = ({ onSubmit, username, onChange, content }) => {
   return (
     <Segment basic textAlign="center">
+      <p>
+        <strong>{content}</strong>
+      </p>
+      <br />
       <Form onSubmit={onSubmit}>
         <Input
           name="username"

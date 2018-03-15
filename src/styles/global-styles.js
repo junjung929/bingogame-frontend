@@ -20,10 +20,11 @@ injectGlobal`
 
   .flex-container{
     display: flex;
-    overflow: auto;
     height: 100%;
     align-items: center;
     justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 
   .text-center {

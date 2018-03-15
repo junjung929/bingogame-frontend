@@ -1,6 +1,6 @@
 {
-  "short_name": "Bingo Game Frontend",
-  "name": "Bingo Game Frontend",
+  "short_name": "Bingo Game",
+  "name": "Bingo Game",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,6 +10,6 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#fff",
+  "background_color": "#000"
 }
