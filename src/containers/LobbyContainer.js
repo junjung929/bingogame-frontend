@@ -28,7 +28,6 @@ class LobbyContainer extends Component {
     this.props.fetchRooms(PERPAGE, page);
   };
   onPageChange = (e, { activePage }) => {
-    console.log(activePage);
     this.setState({ page: activePage - 1 }, () => {
       this.refetchRooms();
     });

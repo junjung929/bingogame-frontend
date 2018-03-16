@@ -276,7 +276,6 @@ class BingoContainer extends Component {
     if (!isRoomExist) {
       return <NotFound />;
     }
-    console.log(userList);
     if (!user || userList.length === 0) {
       return (
         <Username

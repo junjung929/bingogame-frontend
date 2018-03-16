@@ -42,7 +42,6 @@ export const randomArrayGenerate = (length, init) => {
 };
 
 export const check = numbers => {
-  console.log(numbers);
   let cnt = 0,
     leftDigonal = 0,
     rightDigonal = 0;
@@ -69,6 +68,5 @@ export const check = numbers => {
     if (leftDigonal === numbers.length) cnt++;
     if (rightDigonal === numbers.length) cnt++;
   });
-  console.log(cnt);
   return cnt;
 };

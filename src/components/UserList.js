@@ -33,8 +33,8 @@ const UserList = ({
   onSendSubmit,
   isSending
 }) => {
-  const { users } = userList;
-  const keys = Object.keys(users);
+  // const { users } = userList;
+  // const keys = Object.keys(users);
   return (
     <Sidebar
       as={Segment}
@@ -62,8 +62,8 @@ const UserList = ({
           minHeight: "30px"
         }}
       >
-        {_.map(keys, key => {
-          const user = users[key];
+        {_.map(userList, user => {
+          console.log(user);
           return (
             <List.Item key={user.id}>
               <List.Icon
