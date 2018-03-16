@@ -4,9 +4,9 @@ import { createStructuredSelector, createSelector } from "reselect";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as RoomActions from "actions/room";
+import * as RoomActions from "../actions/room";
 
-import { Procedure, Intro, Select, ShareAndGo, Input } from "components";
+import { Procedure, Intro, Select, ShareAndGo, Input } from "../components";
 
 import { Segment, Form, Button } from "semantic-ui-react";
 const userOptions = [

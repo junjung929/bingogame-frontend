@@ -1,4 +1,4 @@
-import { CREATE_PROFILE, FETCH_ROOMS } from "constants/ActionTypes";
+import { CREATE_PROFILE, FETCH_ROOMS } from "../constants/ActionTypes";
 
 const initialState = [];
 

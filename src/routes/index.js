@@ -4,8 +4,8 @@ import {
   CreateContainer,
   HomeContainer,
   LobbyContainer
-} from "containers";
-import { Menu, UserList } from "components";
+} from "../containers";
+import { Menu, UserList } from "../components";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
 function Routes() {

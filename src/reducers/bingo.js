@@ -1,4 +1,4 @@
-import { BINGO_START, ADD_SELECTED, BINGO_UPDATE, ADD_USER } from "constants/ActionTypes";
+import { BINGO_START, ADD_SELECTED, BINGO_UPDATE, ADD_USER } from "../constants/ActionTypes";
 
 const initialState = { user: undefined, numbers: [], selected: [] };
 

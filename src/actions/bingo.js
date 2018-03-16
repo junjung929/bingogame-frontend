@@ -3,7 +3,7 @@ import {
   ADD_SELECTED,
   BINGO_UPDATE,
   ADD_USER
-} from "constants/ActionTypes";
+} from "../constants/ActionTypes";
 // import { createAction } from "redux-actions";
 import { randomArrayGenerate } from "../components/functions";
 

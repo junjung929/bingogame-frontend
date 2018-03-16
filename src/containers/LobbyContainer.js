@@ -1,12 +1,12 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Lobby, Login, Table, Intro } from "components";
+import { Lobby, Login, Table, Intro } from "../components";
 import { createStructuredSelector, createSelector } from "reselect";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as RoomActions from "actions/room";
+import * as RoomActions from "../actions/room";
 import { Link } from "react-router-dom";
 import { Segment, Button, Icon } from "semantic-ui-react";
 

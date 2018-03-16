@@ -16,8 +16,8 @@ import { createStructuredSelector, createSelector } from "reselect";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as BingoAction from "actions/bingo";
-import * as RoomAction from "actions/room";
+import * as BingoAction from "../actions/bingo";
+import * as RoomAction from "../actions/room";
 import { socket } from "../constants";
 import { Redirect } from "react-router-dom";
 

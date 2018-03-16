@@ -1,4 +1,4 @@
-import { CREATE_ROOM, FETCH_ROOM } from "constants/ActionTypes";
+import { CREATE_ROOM, FETCH_ROOM } from "../constants/ActionTypes";
 
 const initialState = {
   roomTitle: undefined,
