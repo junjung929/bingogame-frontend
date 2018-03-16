@@ -206,7 +206,7 @@ class BingoContainer extends Component {
     this.setState({ isReady: !isReady, isLoading: true, isBingoStart: true });
   };
   start = () => {
-    const { size } = this.props.bingo;
+    const { size } = this.props.room;
     console.log("bingo start");
     socket.emit("bingo start", size);
     this.setState({ isLoading: true, isBingoStart: true });

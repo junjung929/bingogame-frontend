@@ -8,6 +8,7 @@ import {
 import { randomArrayGenerate } from "../components/functions";
 
 export const bingoStart = (length, init) => {
+  console.log(length);
   return (dispatch, getState) => {
     // const { bingo } = getState();
     const bingoBoard = randomArrayGenerate(length, init);

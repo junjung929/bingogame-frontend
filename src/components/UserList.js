@@ -63,7 +63,6 @@ const UserList = ({
         }}
       >
         {_.map(userList, user => {
-          console.log(user);
           return (
             <List.Item key={user.id}>
               <List.Icon
