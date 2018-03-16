@@ -9,12 +9,16 @@ import * as RoomActions from "actions/room";
 import { Procedure, Intro, Select, ShareAndGo, Input } from "components";
 
 import { Segment, Form, Button } from "semantic-ui-react";
-const options = [
+const userOptions = [
   { key: 2, text: "2 people - min", value: 2 },
   { key: 3, text: "3 people", value: 3 },
   { key: 4, text: "4 people", value: 4 },
   { key: 5, text: "5 people", value: 5 },
   { key: 6, text: "6 people - max", value: 6 }
+];
+const sizeOptions = [
+  { key: 9, text: "3x3", value: 9 },
+  { key: 25, text: "5x5", value: 25 }
 ];
 class CreateContainer extends Component {
   static propTypes = {
@@ -27,14 +31,15 @@ class CreateContainer extends Component {
       roomTitle: "",
       maxUser: 0,
       roomId: undefined,
-      step: "create"
+      step: "create",
+      size: 25
     };
   }
   componentDidMount() {
-    const { isCreated, id } = this.props.room;
+    /* const { isCreated, id } = this.props.room;
     if (isCreated) {
       this.setState({ roomId: id, step: "share" });
-    }
+    } */
   }
   onTitleChange = ({ target }) => {
     const { value } = target;
@@ -43,8 +48,11 @@ class CreateContainer extends Component {
   onMaxChange = (e, { value }) => {
     this.setState({ maxUser: value });
   };
+  onSizeChange = (e, { value }) => {
+    this.setState({ size: value });
+  };
   onSubmit = () => {
-    const { maxUser, roomTitle } = this.state;
+    const { maxUser, roomTitle, size } = this.state;
     if (roomTitle.length < 5) {
       return alert("Please input at least 5 letters for the title.");
     }
@@ -52,7 +60,7 @@ class CreateContainer extends Component {
       return alert("Please select the number of users.");
     }
     this.props
-      .createRoom(maxUser, roomTitle)
+      .createRoom(maxUser, roomTitle, size)
       .then(callback => {
         const { id } = callback;
         this.setState({ roomId: id, step: "share" });
@@ -66,7 +74,8 @@ class CreateContainer extends Component {
       step: "create",
       roomTitle: "",
       roomId: undefined,
-      maxUser: 0
+      maxUser: 0,
+      size: 25
     });
   };
   onCopyClick = () => {
@@ -79,7 +88,7 @@ class CreateContainer extends Component {
     document.execCommand("Copy");
   };
   render() {
-    const { roomId, step, roomTitle, maxUser } = this.state;
+    const { roomId, step, roomTitle, maxUser, size } = this.state;
     let segment = (
       <div className="text-center">
         <p>
@@ -87,20 +96,31 @@ class CreateContainer extends Component {
           And create your game!
         </p>
         <Form onSubmit={this.onSubmit}>
-          <Input
-            label="Title: "
-            name="room_title"
-            value={roomTitle}
-            type="text"
-            onChange={this.onTitleChange}
-            placeholder="Input your title"
-          />
+          <Form.Group inline>
+            <Input
+              label="Title: "
+              name="room_title"
+              value={roomTitle}
+              type="text"
+              onChange={this.onTitleChange}
+              placeholder="Input your title"
+            />
+            <Select
+              compact
+              name="size"
+              type="number"
+              placeholder="Size"
+              options={sizeOptions}
+              onChange={this.onSizeChange}
+              value={size}
+            />
+          </Form.Group>
           <Select
             name="max_user"
             type="number"
             label="Play with: "
             placeholder="Select the number of users"
-            options={options}
+            options={userOptions}
             onChange={this.onMaxChange}
             value={maxUser}
           />
@@ -118,6 +138,7 @@ class CreateContainer extends Component {
     if (step === "share") {
       segment = (
         <ShareAndGo
+          onPlay
           roomId={roomId ? roomId : null}
           maxUser={parseInt(this.props.room.maxUser)}
           roomTitle={roomTitle}

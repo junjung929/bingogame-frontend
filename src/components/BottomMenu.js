@@ -3,13 +3,18 @@ import React from "react";
 import { Menu } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
-const MenuBar = ({ usersContent, nickContent, startContent }) => {
+const MenuBar = ({ usersContent, shareContent, nickContent, startContent }) => {
   return (
     <Menu fixed="bottom" inverted borderless style={{ zIndex: 1002 }}>
       <Menu.Item
         key={`menu-bottom-users`}
         name="users"
         content={usersContent}
+      />
+      <Menu.Item
+        key={`menu-bottom-share`}
+        name="share"
+        content={shareContent}
       />
       <Menu.Menu position="right">
         <Menu.Item

@@ -6,7 +6,8 @@ const initialState = {
   id: undefined,
   isCreated: false,
   isExist: false,
-  connectedUsers: 0
+  connectedUsers: 0,
+  size: 25
 };
 
 export default function room(state = initialState, action) {
@@ -26,7 +27,8 @@ export default function room(state = initialState, action) {
         maxUser: parseInt(action.payload.maxUser),
         id: action.payload.id,
         connectedUsers: action.payload.connectedUsers,
-        isExist: true
+        isExist: true,
+        size: action.payload.size
       };
     default:
       return state;

@@ -120,7 +120,8 @@ const UserList = ({
                 key={`${from}-msg-${id}`}
                 style={{
                   color: from === "system" ? "darkgoldenrod" : "indigo",
-                  textAlign: textAlign ? textAlign : "inherit"
+                  // textAlign: textAlign ? textAlign : "inherit"
+                  textAlign: from === "system" ? "center" : "inherit"
                 }}
               >
                 [{from}]: {message}

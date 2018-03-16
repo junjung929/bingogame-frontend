@@ -6,7 +6,7 @@ export const ADD_USER = "ADD_USER";
 
 // Lobby
 export const CREATE_PROFILE = "CREATE_PROFILE";
-export const FETCH_ROOMS = "FETCH_ROOMS";
 
 export const CREATE_ROOM = "CREATE_ROOM";
 export const FETCH_ROOM = "FETCH_ROOM";
+export const FETCH_ROOMS = "FETCH_ROOMS";

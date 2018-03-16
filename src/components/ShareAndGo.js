@@ -47,7 +47,7 @@ const ShareButton = styled.div`
   }
 `;
 const size = 32;
-const ShareAndGo = ({ roomId, maxUser, onCopyClick }) => {
+const ShareAndGo = ({ roomId, maxUser, onCopyClick, onPlay }) => {
   const url = `/bingo/${roomId}`;
   const shareLink = `${window.location.host}${url}`;
   const shareItems = [
@@ -103,7 +103,7 @@ const ShareAndGo = ({ roomId, maxUser, onCopyClick }) => {
   return (
     <Segment basic textAlign="center">
       <h3>
-        <strong>Created!</strong>
+        <strong>{onPlay ? "Ceated!" : "Share the game!"}</strong>
       </h3>
       <p>
         Share your bingo game with your friends via...<br />
@@ -138,15 +138,17 @@ const ShareAndGo = ({ roomId, maxUser, onCopyClick }) => {
       </ShareIcons>
       <br />
       <br />
-      <Button
-        as={Link}
-        to={url}
-        icon="arrow right"
-        labelPosition="right"
-        content="Play"
-        size="large"
-        style={{ backgroundColor: "#84468B", color: "white" }}
-      />
+      {onPlay ? (
+        <Button
+          as={Link}
+          to={url}
+          icon="arrow right"
+          labelPosition="right"
+          content="Play"
+          size="large"
+          style={{ backgroundColor: "#84468B", color: "white" }}
+        />
+      ) : null}
     </Segment>
   );
 };

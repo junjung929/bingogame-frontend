@@ -1,5 +1,10 @@
 import React from "react";
-import { BingoContainer, CreateContainer, HomeContainer } from "containers";
+import {
+  BingoContainer,
+  CreateContainer,
+  HomeContainer,
+  LobbyContainer
+} from "containers";
 import { Menu, UserList } from "components";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
@@ -12,8 +17,9 @@ function Routes() {
           <Switch>
             <Route exact path="/" component={HomeContainer} />
             <Route exact path="/create" component={CreateContainer} />
+            <Route exact path="/lobby" component={LobbyContainer} />
             <Route exact path="/bingo/:room_id" component={BingoContainer} />
-            <Route
+            {/*  <Route
               exact
               path="/temp"
               component={() => {
@@ -25,7 +31,7 @@ function Routes() {
                   />
                 );
               }}
-            />
+            /> */}
             <Route path="*" component={() => <div />} />
           </Switch>
         </div>

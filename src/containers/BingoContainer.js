@@ -8,7 +8,8 @@ import {
   Input,
   Username,
   UserList,
-  BottomMenu as Menu
+  BottomMenu as Menu,
+  ShareAndGo
 } from "../components";
 import { check } from "../components/functions";
 import { createStructuredSelector, createSelector } from "reselect";
@@ -33,8 +34,6 @@ import {
   Modal,
   Label
 } from "semantic-ui-react";
-
-const SIZE = 9;
 
 class BingoContainer extends Component {
   static propTypes = {
@@ -73,7 +72,7 @@ class BingoContainer extends Component {
       .fetchRoom(room_id)
       .then(callback => {
         this.setState({ isRoomExist: true, isLoading: false, roomId: room_id });
-        this.props.bingoStart(SIZE, "initial");
+        this.props.bingoStart(callback.size, "initial");
         socket.emit("bingo join", room_id, callback.maxUser);
         socket.on("bingo join", userId => {
           this.setState({ userId });
@@ -109,7 +108,7 @@ class BingoContainer extends Component {
 
     socket.on("bingo start", size => {
       console.log("bingo started");
-      this.props.bingoStart(SIZE).then(() => {
+      this.props.bingoStart(size).then(() => {
         this.setState({ isBingoStart: true, isLoading: false });
       });
       this.setState({ notifyMsg: `Game start!` });
@@ -207,8 +206,9 @@ class BingoContainer extends Component {
     this.setState({ isReady: !isReady, isLoading: true, isBingoStart: true });
   };
   start = () => {
+    const { size } = this.props.bingo;
     console.log("bingo start");
-    socket.emit("bingo start", SIZE);
+    socket.emit("bingo start", size);
     this.setState({ isLoading: true, isBingoStart: true });
   };
   onSelectNumber = ({ target: { value } }) => {
@@ -224,6 +224,15 @@ class BingoContainer extends Component {
     }
     socket.emit("message", this.state.chat);
     this.setState({ isSending: true, chat: "" });
+  };
+  onCopyClick = () => {
+    /* Get the text field */
+    const copyText = document.getElementById("myInput");
+    /* Select the text field */
+    copyText.select();
+
+    /* Copy the text inside the text field */
+    document.execCommand("Copy");
   };
   toggleVisibility = () => {
     const { visible } = this.state;
@@ -286,13 +295,27 @@ class BingoContainer extends Component {
         onClick={this.toggleVisibility}
       />
     );
+    const shareContent = (
+      <Modal
+        size="mini"
+        trigger={<Button circular size="tiny" icon="share" />}
+        content={
+          <ShareAndGo
+            roomId={this.props.match.params.room_id}
+            maxUser={parseInt(this.props.room.maxUser)}
+            onCopyClick={this.onCopyClick}
+          />
+        }
+      />
+    );
     const nickContent = (
       <Modal
         size="mini"
         trigger={
           <Button
+            circular
             size="tiny"
-            content="Username"
+            icon="user"
             onClick={visible ? this.toggleVisibility : null}
           />
         }
@@ -359,9 +382,7 @@ class BingoContainer extends Component {
             }}
           />
           <Menu
-            usersContent={usersContent}
-            nickContent={nickContent}
-            startContent={startContent}
+            {...{ usersContent, shareContent, nickContent, startContent }}
           />
           <Dimmer active={isLoading} inverted>
             <Loader>Loading</Loader>

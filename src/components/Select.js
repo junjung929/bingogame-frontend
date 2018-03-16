@@ -11,22 +11,33 @@ const Select = ({
   placeholder,
   options,
   onChange,
-  value
+  value,
+  compact,
+  fluid
 }) => {
   return (
-    <Form.Field className={className}>
-      <Form.Select
-        inline
-        {...{ label, type, name, placeholder, options, onChange }}
-        {...value}
-      />
-    </Form.Field>
+    <Form.Select
+      inline
+      {...{
+        fluid,
+        label,
+        type,
+        name,
+        placeholder,
+        options,
+        onChange,
+        compact
+      }}
+      {...value}
+    />
   );
 };
 
-const { string, array, func } = PropTypes;
+const { string, array, func, bool } = PropTypes;
 Select.propTypes = {
-  label: string.isRequired,
+  fluid: bool,
+  compact: bool,
+  label: string,
   name: string.isRequired,
   type: string.isRequired,
   placeholder: string.isRequired,

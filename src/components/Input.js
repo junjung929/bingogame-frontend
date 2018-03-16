@@ -10,9 +10,10 @@ const Input = ({
   onChange,
   placeholder,
   style,
-  action
+  action,
+  fluid
 }) => (
-  <Form.Field>
+  // <Form.Field>
     <Form.Input
       inline
       {...{
@@ -23,15 +24,17 @@ const Input = ({
         value,
         type,
         onChange,
-        placeholder
+        placeholder,
+        fluid
       }}
     />
-  </Form.Field>
+  // </Form.Field>
 );
 
-const { string, func } = PropTypes;
+const { string, func, bool } = PropTypes;
 
 Input.propTypes = {
+  fluid: bool,
   name: string.isRequired,
   value: string.isRequired,
   label: string,

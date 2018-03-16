@@ -12,7 +12,8 @@ const Logo = styled.span`
 const MenuBar = () => {
   const menus = [
     { name: "home", as: Link, to: "/", content: <Logo>VINGO</Logo> },
-    { name: "create", as: Link, to: "/create", content: "Create New Room" }
+    { name: "create", as: Link, to: "/create", content: "Create New Room" },
+    { name: "lobby", as: Link, to: "/lobby", content: "Games" }
   ];
   return (
     <Menu fixed="top">

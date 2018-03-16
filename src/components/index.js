@@ -13,6 +13,7 @@ export { default as ShareAndGo } from "./ShareAndGo";
 export { default as Username } from "./Username";
 export { default as UserList } from "./UserList";
 
+export { default as Table } from "./Table";
 
 export { default as NotFound } from "./NotFound";
 export { default as Menu } from "./Menu";
