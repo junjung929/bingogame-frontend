@@ -61,7 +61,9 @@ class BingoContainer extends Component {
       chat: "",
       messages: [],
       isSending: false,
-      notifyMsg: ""
+      notifyMsg: "",
+      resultOpen,
+      resultText
     };
   }
   componentDidMount() {
@@ -168,13 +170,16 @@ class BingoContainer extends Component {
     socket.on("bingo end", winner => {
       console.log("bingo end ", winner);
       this.setState({
+        resultOpen: true,
+        resultText: `Winner is ${
+          winner === this.props.bingo.user ? "you" : winner
+        }!`,
         notifyMsg: `Winner is ${
           winner === this.props.bingo.user ? "you" : winner
         }!`,
         isBingoStart: false,
         bingoCount: 0
       });
-      alert(`Winner is ${winner === this.props.bingo.user ? "you" : winner}!`);
       socket.emit("bingo ready", false);
       setTimeout(() => {
         this.setState({ notifyMsg: "" });
@@ -260,7 +265,9 @@ class BingoContainer extends Component {
       chat,
       messages,
       isSending,
-      notifyMsg
+      notifyMsg,
+      resultOpen,
+      resultText
     } = this.state;
     const { numbers, user } = this.props.bingo;
     const { maxUser } = this.props.room;
@@ -407,6 +414,16 @@ class BingoContainer extends Component {
             </Label>
           ) : null}
         </Segment>
+        <Modal
+          open={resultOpen}
+          content={resultText}
+          actions={
+            <Button
+              icon="x"
+              onClick={() => thi.setState({ resultOpen: false })}
+            />
+          }
+        />
       </Container>
     );
   }
