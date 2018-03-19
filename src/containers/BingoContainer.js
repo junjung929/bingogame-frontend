@@ -174,6 +174,7 @@ class BingoContainer extends Component {
         isBingoStart: false,
         bingoCount: 0
       });
+      alert(`Winner is ${winner === this.props.bingo.user ? "you" : winner}!`);
       socket.emit("bingo ready", false);
       setTimeout(() => {
         this.setState({ notifyMsg: "" });
