@@ -1,7 +1,7 @@
 import socketIOClient from "socket.io-client";
 
 const HTTP = "http://";
-const HOST = "192.168.1.103";
+const HOST = "10.115.144.157";
 export const URL = `${HTTP}${HOST}`;
 export const PORT = 4001;
 export const ROOT_URL = `${URL}:${PORT}`;

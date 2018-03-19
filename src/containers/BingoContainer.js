@@ -415,14 +415,18 @@ class BingoContainer extends Component {
           ) : null}
         </Segment>
         <Modal
+          header="GAME OVER!"
+          size="mini"
           open={resultOpen}
           content={resultText}
-          actions={
-            <Button
-              icon="x"
-              onClick={() => this.setState({ resultOpen: false })}
-            />
-          }
+          actions={[
+            {
+              key: "done",
+              content: "Done",
+              positive: true,
+              onClick: () => this.setState({ resultOpen: false })
+            }
+          ]}
         />
       </Container>
     );
