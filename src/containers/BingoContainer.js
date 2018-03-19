@@ -171,11 +171,13 @@ class BingoContainer extends Component {
         notifyMsg: `Winner is ${
           winner === this.props.bingo.user ? "you" : winner
         }!`,
-        isBingoStart: false
+        isBingoStart: false,
+        bingoCount: 0
       });
+      socket.emit("bingo ready", false);
       setTimeout(() => {
         this.setState({ notifyMsg: "" });
-      }, 3000);
+      }, 5000);
     });
   }
   componentWillUnmount() {

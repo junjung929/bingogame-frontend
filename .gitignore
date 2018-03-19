@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 
+#server connection
+/src/constants/index.js
+
 # testing
 /coverage
 

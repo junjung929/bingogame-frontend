@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Logo = styled.span`
-  color: #ff0066;
+  color: #84468B;
   font-weight: bold;
 `;
 const MenuBar = () => {

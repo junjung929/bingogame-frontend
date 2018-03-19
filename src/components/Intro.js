@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Segment } from "semantic-ui-react";
 
 const Logo = styled.span`
-  color: #ff0066;
+  color: #84468B;
 `;
 const Intro = () => {
   return (
