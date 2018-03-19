@@ -62,8 +62,8 @@ class BingoContainer extends Component {
       messages: [],
       isSending: false,
       notifyMsg: "",
-      resultOpen,
-      resultText
+      resultOpen: false,
+      resultText: ""
     };
   }
   componentDidMount() {
@@ -420,7 +420,7 @@ class BingoContainer extends Component {
           actions={
             <Button
               icon="x"
-              onClick={() => thi.setState({ resultOpen: false })}
+              onClick={() => this.setState({ resultOpen: false })}
             />
           }
         />
