@@ -183,7 +183,7 @@ class BingoContainer extends Component {
       });
       socket.emit("bingo ready", false);
       setTimeout(() => {
-        this.setState({ notifyMsg: "", resultText: "" });
+        this.setState({ notifyMsg: ""});
       }, 5000);
     });
   }
