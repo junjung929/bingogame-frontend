@@ -146,6 +146,7 @@ class BingoContainer extends Component {
       setTimeout(() => {
         this.props.bingoUpdate(numbers);
         const cnt = check(numbers);
+        console.log("bingo count", cnt);
         if (cnt > Math.floor(numbers.length / 2)) {
           socket.emit("bingo end", this.props.bingo.user);
         }
@@ -182,7 +183,7 @@ class BingoContainer extends Component {
       });
       socket.emit("bingo ready", false);
       setTimeout(() => {
-        this.setState({ notifyMsg: "" });
+        this.setState({ notifyMsg: "", resultText: "" });
       }, 5000);
     });
   }
