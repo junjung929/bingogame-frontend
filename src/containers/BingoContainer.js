@@ -63,7 +63,8 @@ class BingoContainer extends Component {
       isSending: false,
       notifyMsg: "",
       resultOpen: false,
-      resultText: ""
+      resultText: "",
+      bingoSize: 25
     };
   }
   componentDidMount() {
@@ -77,7 +78,7 @@ class BingoContainer extends Component {
         this.props.bingoStart(callback.size, "initial");
         socket.emit("bingo join", room_id, callback.maxUser);
         socket.on("bingo join", userId => {
-          this.setState({ userId });
+          this.setState({ userId, bingoSize: callback.size });
         });
         if (user) {
           socket.emit("username change", user);
@@ -183,7 +184,7 @@ class BingoContainer extends Component {
       });
       socket.emit("bingo ready", false);
       setTimeout(() => {
-        this.setState({ notifyMsg: ""});
+        this.setState({ notifyMsg: "" });
       }, 5000);
     });
   }
@@ -212,7 +213,8 @@ class BingoContainer extends Component {
   onReady = () => {
     const { isReady } = this.state;
     socket.emit("bingo ready", !isReady);
-    this.setState({ isReady: !isReady, isLoading: true, isBingoStart: true });
+    this.props.bingoStart(this.state.bingoSize, "initial");
+    this.setState({ isReady: !isReady, isLoading: true, isBingoStart: false });
   };
   start = () => {
     const { size } = this.props.room;
